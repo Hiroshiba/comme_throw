@@ -5,6 +5,8 @@
 import argparse
 import os
 import sys
+from pathlib import Path
+import xml.etree.ElementTree as ET
 
 from nicomodule.common import (genfilter,
                                nicoid,
@@ -13,6 +15,22 @@ from nicomodule.live import (cparser,
                              niconnect,
                              pstat)
 from nicomodule.app import cview
+
+
+def make_xml_element(root_xml, comment):
+    last_no = int(list(root_xml)[-1].attrib['no'])
+    attr = dict(
+        no=str(last_no + 1),
+        time=str(0),
+        handle=comment['nickname'],
+    )
+    print(comment['id'].isdigit())
+    if comment['id'].isdigit():
+        attr['icon_url'] = 'http://usericon.nimg.jp/usericon/{}/{}.jpg'.format(int(comment['id']) // 10000, comment['id'])
+    print(attr)
+    element = ET.Element('comment', attrib=attr)
+    element.text = comment['content']
+    return element
 
 
 def _main() -> None:
@@ -192,12 +210,30 @@ def _main() -> None:
                 elif souldMute:
                     continue
 
-            if conf.narrow is False:
-                cview.show_comment(parsed,
-                                   plyStat.start,
-                                   conf.nameLength)
-            elif conf.narrow is True:
+            # for CommeComme
+            if parsedArgs.xml is not None:
+                path_xml = Path(parsedArgs.xml)
+
+                # get last number of xml
+                tree = ET.parse(path_xml)
+                root_xml = tree.getroot()
+                element = make_xml_element(root_xml, parsed)
+
+                # add xml
+                root_xml.append(element)
+                tree.write(path_xml, encoding='utf-8')
+
+            try:
+                if conf.narrow is False:
+                    cview.show_comment(parsed,
+                                       plyStat.start,
+                                       conf.nameLength)
+                elif conf.narrow is True:
+                    cview.narrow_comment(parsed, conf.nameLength)
+            except:
+                parsed['content'] = '# ターミナルに表示できませんでした #'
                 cview.narrow_comment(parsed, conf.nameLength)
+
             if isDisconnected:
                 break
 
@@ -244,6 +280,10 @@ def parse_args(conf: cview.Config) -> argparse.Namespace:
         "-n", "--narrow",
         help="narrow mode",
         action="store_true")
+    # comment.xml path for CommeCommme.
+    argParser.add_argument(
+        "-x", "--xml",
+        help="comment.xml path for CommeCommme")
     return argParser.parse_args()
 
 

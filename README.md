@@ -58,7 +58,10 @@ Cookieを指定せず、cookieがまだ無い場合最初にログイン処理�
 コメントのミュートフィルタの有効化  
 
 * -n | --narrow  
-表示幅を狭くする  
+表示幅を狭くする
+
+* -x | --xml [PATH_COMMENT_XML]
+commecomme用のcomment.xmlのパス
 
 
 ### 通常表示
