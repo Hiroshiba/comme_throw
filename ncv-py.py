@@ -161,6 +161,11 @@ def _main() -> None:
     else:
         logFile = None
 
+    # init comment.xml
+    if parsedArgs.xml is not None:
+        path_xml = Path(parsedArgs.xml)
+        path_xml.open(mode='w').write('<log></log>')
+
     # Connect socket to comment-server.
     # socket.close() is called by __exit__.
     with niconnect.MsgSocket() as msgSock:
