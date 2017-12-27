@@ -1,4 +1,4 @@
-# NCV-Py
+# コメ投げ
 ![img](demo/1.jpg)
 
 ※ミュートフィルタ適用時の表示  
@@ -61,7 +61,7 @@ Cookieを指定せず、cookieがまだ無い場合最初にログイン処理�
 表示幅を狭くする
 
 * -x | --xml [PATH_COMMENT_XML]
-commecomme用のcomment.xmlのパス
+[コメコメ](https://github.com/Hiroshiba/commecomme)用のcomment.xmlのパス
 
 
 ### 通常表示
