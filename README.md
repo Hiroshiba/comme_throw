@@ -32,6 +32,8 @@ Unix系であれば
 `$ ./ncv-py.py "http://com.nicovideo.jp/community/coXXXX"`  
 とすると利用できます。(XXXXは数字)  
 
+Windowsであれば、[配布ページ](https://github.com/Hiroshiba/comme_throw/releases)からexeファイルをダウンロードできます。
+
 引数は、放送、あるいはそのコミュニティーのURLが必須です。  
 その他に、いくつかの追加のオプションがあります。  
 
