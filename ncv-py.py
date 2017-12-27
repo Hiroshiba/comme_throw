@@ -17,17 +17,15 @@ from nicomodule.live import (cparser,
 from nicomodule.app import cview
 
 
-def make_xml_element(root_xml, comment):
-    last_no = int(list(root_xml)[-1].attrib['no'])
+def make_xml_element(comment):
     attr = dict(
-        no=str(last_no + 1),
+        no=str(comment['no']),
         time=str(0),
         handle=comment['nickname'],
     )
     print(comment['id'].isdigit())
     if comment['id'].isdigit():
         attr['icon_url'] = 'http://usericon.nimg.jp/usericon/{}/{}.jpg'.format(int(comment['id']) // 10000, comment['id'])
-    print(attr)
     element = ET.Element('comment', attrib=attr)
     element.text = comment['content']
     return element
@@ -217,7 +215,7 @@ def _main() -> None:
                 # get last number of xml
                 tree = ET.parse(path_xml)
                 root_xml = tree.getroot()
-                element = make_xml_element(root_xml, parsed)
+                element = make_xml_element(parsed)
 
                 # add xml
                 root_xml.append(element)
